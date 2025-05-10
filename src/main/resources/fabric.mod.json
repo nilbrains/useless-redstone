@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "useless-redstone",
+	"version": "${version}",
+	"name": "Useless Redstone",
+	"description": "this is some useless redstone blocks",
+	"authors": [
+		"NilBrains"
+	],
+	"contact": {
+		"homepage": "https://github.com/nilbrains/useless-redstone",
+		"sources": "https://github.com/nilbrains/useless-redstone"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/useless-redstone/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"fun.lingzhen.mc.UselessRedstone"
+		],
+		"fabric-datagen": [
+			"fun.lingzhen.mc.UselessRedstoneDataGenerator"
+		]
+	},
+	"mixins": [
+		"useless-redstone.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.21.5",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

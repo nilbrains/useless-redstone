@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": "minecraft:chest",
+    "I": "minecraft:iron_ingot",
+    "U": "minecraft:comparator"
+  },
+  "pattern": [
+    "IUI",
+    "ICI",
+    " I "
+  ],
+  "result": {
+    "count": 1,
+    "id": "useless-redstone:cate_hopper"
+  }
+}
