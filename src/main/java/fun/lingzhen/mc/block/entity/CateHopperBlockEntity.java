@@ -1,5 +1,6 @@
 package fun.lingzhen.mc.block.entity;
 
+import fun.lingzhen.mc.block.CateHopperBlock;
 import fun.lingzhen.mc.init.ModBlockEntityTypes;
 import fun.lingzhen.mc.screen.CateHopperScreenHandler;
 import net.minecraft.block.*;
@@ -27,12 +28,17 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
+import static fun.lingzhen.mc.UselessRedstone.MOD_ID;
+
 public class CateHopperBlockEntity extends LootableContainerBlockEntity implements Hopper {
 
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final int TRANSFER_COOLDOWN = 8;
     public static final int INVENTORY_SIZE = 6;
     private static final int[][] AVAILABLE_SLOTS_CACHE = new int[54][];
@@ -108,7 +114,7 @@ public class CateHopperBlockEntity extends LootableContainerBlockEntity implemen
         if (world.isClient) {
             return false;
         } else {
-            if (!blockEntity.needsCooldown() && (Boolean)state.get(HopperBlock.ENABLED)) {
+            if (!blockEntity.needsCooldown() && (Boolean)state.get(CateHopperBlock.ENABLED)) {
                 boolean bl = false;
                 if (!blockEntity.isEmpty()) {
                     bl = insert(world, pos, blockEntity);
@@ -230,6 +236,12 @@ public class CateHopperBlockEntity extends LootableContainerBlockEntity implemen
             int[] var11 = getAvailableSlots(inventory, direction);
             int var12 = var11.length;
 
+//            LOGGER.info("extract inventory is ===> {}", inventory);
+
+            if (inventory instanceof CateHopperBlockEntity) {
+                var12 = var12 - 1;
+            }
+
             for(int var8 = 0; var8 < var12; ++var8) {
                 int i = var11[var8];
                 if (extract(hopper, inventory, i, direction)) {
@@ -283,6 +295,10 @@ public class CateHopperBlockEntity extends LootableContainerBlockEntity implemen
     public static boolean extract(Inventory inventory, ItemEntity itemEntity) {
         boolean bl = false;
         ItemStack itemStack = itemEntity.getStack().copy();
+        ItemStack itemStackTrans = inventory.getStack(inventory.size() - 1);
+        if (!itemStackTrans.isEmpty() && !itemStackTrans.getItemName().equals(itemStack.getItemName())) {
+            return false;
+        }
         ItemStack itemStack2 = transfer((Inventory)null, inventory, itemStack, (Direction)null);
         if (itemStack2.isEmpty()) {
             bl = true;
